@@ -88,9 +88,9 @@ def generate_launch_description():
             '/lidar@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan',
             '/lidar/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
             #DEEP CAMERA
-            '/depth_camera/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
-            '/depth_camera/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-            '/depth_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image',
+            # '/depth_camera/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
+            # '/depth_camera/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+            # '/depth_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image',
             #IMU
             '/imu@sensor_msgs/msg/Imu@ignition.msgs.IMU',
         ],
@@ -109,16 +109,23 @@ def generate_launch_description():
         output="screen",
     )
 
+    pc2_to_xyzi = Node(
+        package=package_name,
+        executable="pc2_to_xyzi",
+        output="screen"
+    )
+
 
     return LaunchDescription(
         [
             simu_time,
             ign_resource_path,
-            open_rviz,
+            #open_rviz,
             open_ign,
             gz_spawn_entity,
             robot_state_publisher,
             bridge,
-            tf_broadcaster_odom
+            tf_broadcaster_odom,
+            pc2_to_xyzi
         ]
     )

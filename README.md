@@ -180,7 +180,7 @@ To publish a velocity from terminal:
 ros2 topic pub --once /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.1, y: 0.1}, angular: {z: 0.3}}"
 ```
 ```bash
-ros2 topic pub --once /r1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.1, y: 0.1}, angular: {z: 0.3}}"
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.1, y: 0.1}, angular: {z: 0.3}}"
 ```
 To publish a velocity directly on a Ignition Topic from terminal:
 

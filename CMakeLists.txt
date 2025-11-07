@@ -19,16 +19,27 @@ find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(pcl_ros REQUIRED)
+find_package(pcl_conversions REQUIRED)
+find_package(PCL REQUIRED COMPONENTS common io)
 
 
-set(dependencies "rclcpp" "geometry_msgs" "nav_msgs" "tf2" "tf2_ros")
+set(dependencies "rclcpp" "geometry_msgs" "nav_msgs" "tf2" "tf2_ros" "sensor_msgs" "pcl_ros" "pcl_conversions") 
 
 add_executable(tf_broadcaster src/tf_broadcaster.cpp)
 ament_target_dependencies(tf_broadcaster ${dependencies})
 
+add_executable(pc2_to_xyzi src/pc2_to_xyzi.cpp)
+ament_target_dependencies(pc2_to_xyzi ${dependencies})
+
 
 install(TARGETS
   tf_broadcaster
+  DESTINATION lib/${PROJECT_NAME})
+
+install(TARGETS
+  pc2_to_xyzi
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY launch urdf meshes rviz worlds src scripts
