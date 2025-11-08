@@ -40,6 +40,7 @@ Within this repository, you’ll find everything needed to:
 - [Installation](#)
     - [Pre-requisites and Ignition installation](#)
     - [Installing ROS 2 packages](#)
+    - [Cloning FAST_LIO adapted to work with ROS2](#)
     - [Cloning this Repo](#)
 - [Simulation](#)
     - [Launching the Robot in Gazebo](#)
@@ -111,20 +112,51 @@ For example:
 sudo apt-get install ros-$ROS_DISTRO-joint-state-publisher-gui
 ```
 
+If you already have all your dependencies, the console will return: <br>
+```bash
+All required rosdeps installed successfully
+```
+
+**Note:** _This is made only once for the whole workspace._
+
 ---
+
+### Cloning FAST_LIO -> Mapping (adapted for ROS 2) 
+Please refer to the official documentation at  
+[FAST_LIO_ROS2](https://github.com/Ericsii/FAST_LIO_ROS2)  
+for detailed installation and configuration instructions.
+
+> [!IMPORTANT]  
+> **Dependencies are mandatory for this algorithm to work properly.**  
+> Make sure the following libraries are installed before building:
+> 
+> - **PCL ≥ 1.8** — Follow the [PCL Installation Guide](https://pointclouds.org/downloads/#linux)  
+> - **Eigen ≥ 3.3.4** — Follow the [Eigen Installation Guide](http://eigen.tuxfamily.org/index.php?title=Main_Page)
+
+This package follows a **plug-and-play architecture**.  
+That means you can use the **same package** both in simulation and with your **real-world LiDAR** —  
+without modifying or affecting the original source code. 
+
+This package also requires a subpackage called **`livox_ros_driver2`**,  
+which is essential when working with **Livox AVIA LiDARs** in real-world applications.
+
+If you **do not plan to use a real LiDAR from Livox**, you can safely **comment out all related dependencies** —  
+the package will still compile and run correctly in simulation mode.
+
+However, if it’s not a problem for your setup, it’s recommended to **keep the original configuration**  
+so that the system remains fully compatible with both **simulation** and **real-world** LiDAR setups.
+
 
 ### Cloning this Repo
 
-Please, paste this package in the src folder. Then:
+Clone this package inside the `src` directory of your ROS 2 workspace.  
+Replace **`colcon_ws`** with the name of your own workspace folder.
+
 ```bash
-cd ~/colcon_ws
-rosdep install -i --from-path src --rosdistro $ROS_DISTRO -y
+cd ~/colcon_ws/src
+git clone https://github.com/JossueE/FastLIO-ROS2-Simulation.git
+cd ..
 ```
-
-If you already have all your dependencies, the console will return:<br>
-#All required rosdeps installed successfully
-
-**Note:** _This is made only once for the whole workspace._
 
 Then, build colcon ws:
 ```bash
@@ -165,6 +197,9 @@ ros2 launch ackermann_slam_sim one_robot_ign_launch.py
 > The first launch may take longer as Gazebo caches assets and loads world resources.
 
 If you want to modify parameters such as the robot model, initial pose, world file, base color, or namespace, edit the `one_robot_ign_launch.py` file directly.
+
+> [!IMPORTANT]
+> Is important to say that please do not modify the name of the topics, Unless you really understand what are you doing. As a result that this package is totally compatible with ... and is important be congruent. 
 
 ---
 
