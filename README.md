@@ -146,6 +146,14 @@ the package will still compile and run correctly in simulation mode.
 However, if it’s not a problem for your setup, it’s recommended to **keep the original configuration**  
 so that the system remains fully compatible with both **simulation** and **real-world** LiDAR setups.
 
+### Localization (adapted for ROS 2) 
+
+██╗███╗░░██╗  ██████╗░██████╗░░█████╗░░██████╗░██████╗░███████╗░██████╗░██████╗
+██║████╗░██║  ██╔══██╗██╔══██╗██╔══██╗██╔════╝░██╔══██╗██╔════╝██╔════╝██╔════╝
+██║██╔██╗██║  ██████╔╝██████╔╝██║░░██║██║░░██╗░██████╔╝█████╗░░╚█████╗░╚█████╗░
+██║██║╚████║  ██╔═══╝░██╔══██╗██║░░██║██║░░╚██╗██╔══██╗██╔══╝░░░╚═══██╗░╚═══██╗
+██║██║░╚███║  ██║░░░░░██║░░██║╚█████╔╝╚██████╔╝██║░░██║███████╗██████╔╝██████╔╝
+╚═╝╚═╝░░╚══╝  ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░░╚═════╝░╚═╝░░╚═╝╚══════╝╚═════╝░╚═════╝░
 
 ### Cloning this Repo
 
