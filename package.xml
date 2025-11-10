@@ -21,6 +21,7 @@
   <exec_depend>joint_state_publisher_gui</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>xacro</exec_depend>
+  <exec_depend>pyyaml</exec_depend>
   <exec_depend>ament_index_python</exec_depend>
 
   <export>

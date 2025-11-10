@@ -6,9 +6,6 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /TF1
-        - /RobotModel1
-        - /RGBD-PointCloud21
         - /PointCloud21
       Splitter Ratio: 0.41329479217529297
     Tree Height: 723
@@ -70,6 +67,8 @@ Visualization Manager:
           Value: true
         lidar_link:
           Value: true
+        odom:
+          Value: true
         rgbd_camera_frame:
           Value: true
         rightback_link:
@@ -98,6 +97,8 @@ Visualization Manager:
               {}
             rightback_link:
               {}
+        odom:
+          {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -260,8 +261,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 12.498712539672852
-        Min Value: -0.10028494894504547
+        Max Value: 12.52755069732666
+        Min Value: -0.10035811364650726
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -287,7 +288,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /lidar/points
+        Value: /lidar/points_ign
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
@@ -352,10 +353,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7053962349891663
+      Pitch: 0.39539650082588196
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.139068603515625
+      Yaw: 2.5840742588043213
     Saved: ~
 Window Geometry:
   Displays:

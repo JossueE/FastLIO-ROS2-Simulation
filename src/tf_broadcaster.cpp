@@ -37,7 +37,7 @@ class TfBroadcaster : public rclcpp::Node
     
     ~TfBroadcaster() //Class destructor definition
     {
-      RCLCPP_INFO(this->get_logger(), "Node has been terminated"); 
+      RCLCPP_INFO(this->get_logger(), "Node TfBroadcaster has been terminated"); 
     }
     
     void odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg)

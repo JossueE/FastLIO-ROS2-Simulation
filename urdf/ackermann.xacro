@@ -11,6 +11,22 @@
   <xacro:property name="wheelThickness" value="0.15"/>
 
   <xacro:arg name="base_color"    default="1.0 0.0 0.0 1.0"/>
+  <xacro:arg name="lidar_frequency" default="10"/>
+  <xacro:arg name="horizontal_samples"    default="360"/>
+  <xacro:arg name="horizontal_resolution"    default="1"/>
+  <xacro:arg name="horizontal_min_angle"    default="-3.14159"/>
+  <xacro:arg name="horizontal_max_angle"    default="3.14159"/>
+  <xacro:arg name="vertical_samples"    default="32"/>
+  <xacro:arg name="vertical_resolution"    default="1"/>
+  <xacro:arg name="vertical_min_angle"    default="-0.78539"/>
+  <xacro:arg name="vertical_max_angle"    default="0.78539"/>
+  <xacro:arg name="min_distance"    default="0.2"/>
+  <xacro:arg name="max_distance"    default="100.0"/>
+  <xacro:arg name="resolution"    default="0.017453"/>
+
+  <xacro:arg name="imu_frequency"    default="50"/>
+  
+  
   
   <!-- Custom color (for Ign and RViz) -->
   <material name="gray">
@@ -192,26 +208,26 @@
   <gazebo reference="lidar_link">
     <sensor name='gpu_lidar' type='gpu_lidar'>
       <ignition_frame_id>lidar_link</ignition_frame_id> 
-      <update_rate>10</update_rate> <!-- MHz -->
+      <update_rate>$(arg lidar_frequency)</update_rate> <!-- MHz -->
       <ray>
         <scan>
           <horizontal>
-            <samples>360</samples>
-            <resolution>1</resolution>
-            <min_angle>${-PI}</min_angle>
-            <max_angle>${PI}</max_angle>
+            <samples>$(arg horizontal_samples)</samples>
+            <resolution>$(arg horizontal_resolution)</resolution>
+            <min_angle>$(arg horizontal_min_angle)</min_angle>
+            <max_angle>$(arg horizontal_max_angle)</max_angle>
           </horizontal>
           <vertical>
-            <samples>32</samples>     
-            <resolution>1</resolution>
-            <min_angle>${-PI/4}</min_angle> <!-- -45 deg -->
-            <max_angle>${PI/4}</max_angle> <!-- +45 deg -->
+            <samples>$(arg vertical_samples)</samples>     
+            <resolution>$(arg vertical_resolution)</resolution>
+            <min_angle>$(arg vertical_min_angle)</min_angle> <!-- -45 deg -->
+            <max_angle>$(arg vertical_max_angle)</max_angle> <!-- +45 deg -->
           </vertical>
         </scan>
         <range>
-          <min>0.1</min>
-          <max>100.0</max>
-          <resolution>0.017453</resolution>
+          <min>$(arg min_distance)</min>
+          <max>$(arg max_distance)</max>
+          <resolution>$(arg resolution)</resolution>
         </range>
         <noise>
           <type>gaussian</type>
@@ -302,7 +318,7 @@
     <sensor name="imu_sensor" type="imu">
       <ignition_frame_id>base_link</ignition_frame_id>
       <always_on>1</always_on>
-      <update_rate>50</update_rate>
+      <update_rate>$(arg imu_frequency)</update_rate>
       <visualize>false</visualize>
       <topic>imu</topic>
       <imu>

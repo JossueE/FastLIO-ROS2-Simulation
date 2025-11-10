@@ -68,55 +68,48 @@ private:
     rclcpp::Publisher<ImuMsg>::SharedPtr fused_imu_publisher_;
 
     // need two subscribers for lidar and imu
-    std::unique_ptr<message_filters::Subscriber<PointCloudMsg>>
-        lidar_subscriber_;
-    std::unique_ptr<message_filters::Subscriber<ImuMsg>>
-        imu_subscriber_;
+    std::unique_ptr<message_filters::Subscriber<PointCloudMsg>> lidar_subscriber_;
+    std::unique_ptr<message_filters::Subscriber<ImuMsg>> imu_subscriber_;
 
 public:
     LidarImuSync(/* args */);
     ~LidarImuSync();
 };
 
-LidarImuSync::LidarImuSync(/* args */) : Node("lidar_imu_fusion_node")
+LidarImuSync::LidarImuSync(/* args */) : Node("lidar_imu_sync")
 {
 
-    this->declare_parameter("lidar_topic_in_", std::string("/none"));
-    this->declare_parameter("imu_topic_in_", std::string("/none"));
-    this->declare_parameter("lidar_topic_out_", std::string("/none"));
-    this->declare_parameter("imu_topic_out_", std::string("/none"));
+    this->declare_parameter("lidar_topic_in_", std::string("/lidar/points_pcl"));
+    this->declare_parameter("imu_topic_in_", std::string("/imu/data_ign"));
+    this->declare_parameter("lidar_topic_out_", std::string("/lidar/points"));
+    this->declare_parameter("imu_topic_out_", std::string("/imu/data"));
 
     this->get_parameter("lidar_topic_in_", lidar_topic_in_);
     this->get_parameter("imu_topic_in_", imu_topic_in_);
     this->get_parameter("lidar_topic_out_", lidar_topic_out_);
     this->get_parameter("imu_topic_out_", imu_topic_out_);
 
+
+    auto qos = rclcpp::SensorDataQoS();
+
     // tf2 buffer
     tf2_ros::Buffer tf2_buffer(this->get_clock());
     // tf2 listener
     tf2_ros::TransformListener tf2_listener(tf2_buffer);
 
-    fused_point_cloud_imu_publisher_ = this->create_publisher<sensor_msgs::msg::PointCloud2>(lidar_topic_out_, 10);
+    fused_point_cloud_imu_publisher_ = this->create_publisher<sensor_msgs::msg::PointCloud2>(lidar_topic_out_, rclcpp::SensorDataQoS());
     fused_imu_publisher_ = this->create_publisher<sensor_msgs::msg::Imu>(imu_topic_out_, 10);
 
     // initialize front and rear lidar subscriber objects
-    lidar_subscriber_ =
-        std::make_unique<message_filters::Subscriber<PointCloudMsg>>(this,
-                                                                     lidar_topic_in_);
-    //  "/velodyne_points");
+    lidar_subscriber_ = std::make_unique<message_filters::Subscriber<PointCloudMsg>>(this, lidar_topic_in_, qos.get_rmw_qos_profile());
 
-    imu_subscriber_ =
-        std::make_unique<message_filters::Subscriber<ImuMsg>>(this,
-                                                              imu_topic_in_);
+    //  "/Lidar_points");
+    imu_subscriber_ = std::make_unique<message_filters::Subscriber<ImuMsg>>(this, imu_topic_in_, qos.get_rmw_qos_profile());
 
     // initialize message filter stuffs
-    point_cloud_imu_synchronizer_ =
-        std::make_unique<message_filters::Synchronizer<SyncPolicy>>(
-            SyncPolicy(10), *imu_subscriber_, *lidar_subscriber_);
+    point_cloud_imu_synchronizer_ = std::make_unique<message_filters::Synchronizer<SyncPolicy>>(SyncPolicy(10), *imu_subscriber_, *lidar_subscriber_);
 
-    point_cloud_imu_synchronizer_->registerCallback(
-        std::bind(&LidarImuSync::points_imuCallback, this,
-                  std::placeholders::_1, std::placeholders::_2));
+    point_cloud_imu_synchronizer_->registerCallback(std::bind(&LidarImuSync::points_imuCallback, this, std::placeholders::_1, std::placeholders::_2));
 
     RCLCPP_INFO(this->get_logger(), "\033[1;34m---->pointcloud_topic: %s \033[0m", lidar_topic_in_.c_str());
     RCLCPP_INFO(this->get_logger(), "\033[1;34m---->imu_topic: %s \033[0m", imu_topic_in_.c_str());

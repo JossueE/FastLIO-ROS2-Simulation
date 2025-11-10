@@ -33,16 +33,14 @@ ament_target_dependencies(tf_broadcaster ${dependencies})
 add_executable(pc2_to_xyzi src/pc2_to_xyzi.cpp)
 ament_target_dependencies(pc2_to_xyzi ${dependencies})
 
+add_executable(lidar_imu_sync src/lidar_imu_sync.cpp)
+ament_target_dependencies(lidar_imu_sync ${dependencies})
 
-install(TARGETS
-  tf_broadcaster
+
+install(TARGETS tf_broadcaster pc2_to_xyzi lidar_imu_sync
   DESTINATION lib/${PROJECT_NAME})
 
-install(TARGETS
-  pc2_to_xyzi
-  DESTINATION lib/${PROJECT_NAME})
-
-install(DIRECTORY launch urdf meshes rviz worlds src scripts
+install(DIRECTORY launch urdf meshes rviz worlds src config scripts
   DESTINATION share/${PROJECT_NAME})
 
 

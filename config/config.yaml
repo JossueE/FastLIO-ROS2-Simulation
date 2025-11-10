@@ -1,0 +1,31 @@
+/**:
+  ros__parameters:
+
+    simulation:
+      robot_model : 'ackermann' #Here you can add your URDF model defined in ackermann_slam_sim/urdf
+      robot_ns : 'r1' # Robot namespace (robot name) ----> RViz is set for this value, Do not move unless you need.
+      pose : ['1.0', '0.0', '0.0', '0.0'] #Initial robot pose: x,y,z,th
+      robot_base_color : '0.0 0.0 1.0 0.95' #Ign and Rviz color of the robot's main body (rgba)
+      world_file : 'warehouse.sdf' # empty, warehouse
+
+    lidar:
+      lidar_frequency : 10.0 # The frequency of the lidar in MHz
+      period : 0.1  # The period of the lidar in seconds
+      lidar_out_topic: '/lidar/points'
+
+      horizontal_samples : 360
+      horizontal_resolution : 1
+      horizontal_min_angle : -3.14159 
+      horizontal_max_angle : 3.14159
+
+      vertical_samples : 32
+      vertical_resolution : 1
+      vertical_min_angle : -0.78539
+      vertical_max_angle : 0.78539
+      min_distance : 0.2
+      max_distance : 100.0
+      resolution : 0.017453
+      
+    imu:
+      imu_frequency : 50.0 # The frequency of the lidar in MHz
+      imu_out_topic: '/imu/data'
