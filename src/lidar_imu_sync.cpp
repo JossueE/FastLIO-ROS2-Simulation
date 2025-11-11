@@ -17,7 +17,7 @@
 #include <pcl/common/transforms.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl_conversions/pcl_conversions.h>
-
+#include "pcl_conversions.hpp" 
 #include <pcl/filters/crop_box.h>
 
 // C++
@@ -133,6 +133,15 @@ void LidarImuSync::points_imuCallback(const ImuMsg::ConstSharedPtr &msg1, const 
     imu_data.header.stamp = msg1->header.stamp;
 
     // get the point cloud data
+    // pcl::PointCloud<pcl::PointXYZI> cloud;
+    // pcl_df::fromROSMsg(*msg2, cloud);
+
+    // PointCloudMsg point_cloud_data;
+    // pcl::toROSMsg(cloud, point_cloud_data);
+    // point_cloud_data.header.stamp = msg2->header.stamp;
+    // point_cloud_data.header.frame_id = msg2->header.frame_id;
+
+    // If you dont want to use pcl conversions, uncomment this
     sensor_msgs::msg::PointCloud2 point_cloud_data = *msg2;
     point_cloud_data.header.frame_id = msg2->header.frame_id;
     point_cloud_data.header.stamp = msg2->header.stamp;

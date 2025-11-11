@@ -40,7 +40,7 @@ ament_target_dependencies(lidar_imu_sync ${dependencies})
 install(TARGETS tf_broadcaster pc2_to_xyzi lidar_imu_sync
   DESTINATION lib/${PROJECT_NAME})
 
-install(DIRECTORY launch urdf meshes rviz worlds src config scripts
+install(DIRECTORY launch urdf meshes rviz worlds src config scripts 
   DESTINATION share/${PROJECT_NAME})
 
 

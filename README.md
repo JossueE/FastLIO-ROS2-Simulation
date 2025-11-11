@@ -197,7 +197,7 @@ robot_model = 'ackermann' #Here you can add your URDF model defined in ackermann
 robot_ns = 'r1' # Robot namespace (robot name) ----> RViz is set for this value, Do not move unless you need.
 pose = ['1.0', '0.0', '0.0', '0.0'] #Initial robot pose: x,y,z,th
 robot_base_color = '0.0 0.0 1.0 0.95' #Ign and Rviz color of the robot's main body (rgba)
-world_file = 'warehouse.sdf' # empty, warehouse -----> This is the world of our simulatio, is defined in ackermann_slam_sim/worlds/
+world_file = 'depot.sdf' # empty, depot -----> This is the world of our simulation, is defined in ackermann_slam_sim/worlds/
 package_name = 'ackermann_slam_sim'
 ```
 > [!IMPORTANT]

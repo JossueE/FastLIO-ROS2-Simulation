@@ -10,7 +10,20 @@
   <xacro:property name="base_elevation" value="0.01"/>
 
   <xacro:arg name="base_color"    default="1.0 0.0 0.0 1.0"/>
-  <xacro:arg name="ns"    default="diffbot"/>
+  <xacro:arg name="lidar_frequency" default="10"/>
+  <xacro:arg name="horizontal_samples"    default="360"/>
+  <xacro:arg name="horizontal_resolution"    default="1"/>
+  <xacro:arg name="horizontal_min_angle"    default="-3.14159"/>
+  <xacro:arg name="horizontal_max_angle"    default="3.14159"/>
+  <xacro:arg name="vertical_samples"    default="32"/>
+  <xacro:arg name="vertical_resolution"    default="1"/>
+  <xacro:arg name="vertical_min_angle"    default="-0.78539"/>
+  <xacro:arg name="vertical_max_angle"    default="0.78539"/>
+  <xacro:arg name="min_distance"    default="0.2"/>
+  <xacro:arg name="max_distance"    default="100.0"/>
+  <xacro:arg name="resolution"    default="0.017453"/>
+
+  <xacro:arg name="imu_frequency"    default="50"/>
   
   <!-- Custom color (for Ign and RViz) -->
   <material name="gray">
@@ -18,15 +31,15 @@
   </material>
   
   
-  <link name="$(arg ns)/base_footprint"/>
+  <link name="base_footprint"/>
 
-  <joint name="$(arg ns)/base_joint" type="fixed">
-    <parent link="$(arg ns)/base_footprint"/>
-    <child link="$(arg ns)/base_link"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
     <origin xyz="0 0 ${base_elevation}" rpy="0 0 0"/>
   </joint>
 
-  <link name="$(arg ns)/base_link">
+  <link name="base_link">
     <visual>
       <origin xyz="-0.033 0.0 0.04" rpy="0 0 ${PI}"/>
       <geometry>
@@ -58,15 +71,15 @@
 
 
   <!-- Wheels definition (joints and links) -->
-  <joint name="$(arg ns)/wheel_left_joint" type="continuous">
-    <parent link="$(arg ns)/base_link"/>
-    <child link="$(arg ns)/wheel_left_link"/>
+  <joint name="wheel_left_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_left_link"/>
     <origin xyz="0 ${wheelSeparation/2} ${wheelDiameter/2-base_elevation}" rpy="${-PI/2} 0 0"/>
     <axis xyz="0 0 1"/>
     <limit effort="10" velocity="10"/>
   </joint>
 
-  <link name="$(arg ns)/wheel_left_link">
+  <link name="wheel_left_link">
     <visual>
       <origin xyz="0 0 0.015" rpy="0 0 0"/>
       <geometry>
@@ -87,14 +100,15 @@
       </inertial>
   </link>
 
-  <joint name="$(arg ns)/wheel_right_joint" type="continuous">
-    <parent link="$(arg ns)/base_link"/>
-    <child link="$(arg ns)/wheel_right_link"/>
+  <joint name="wheel_right_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_right_link"/>
     <origin xyz="0 ${-wheelSeparation/2} ${wheelDiameter/2-base_elevation}" rpy="${-PI/2} 0 0"/>
+    <limit effort="10" velocity="10"/>
     <axis xyz="0 0 1"/>
   </joint>
 
-  <link name="$(arg ns)/wheel_right_link">
+  <link name="wheel_right_link">
     <visual>
       <origin xyz="0 0 -0.015" rpy="${PI} 0 0"/> <!-- -z and r=PI for the other wheel -->
       <geometry>
@@ -116,14 +130,14 @@
   </link>
 
   <!-- Caster wheel definition (joints and links) -->
-  <joint name="$(arg ns)/caster_base_joint" type="continuous">
+  <joint name="caster_base_joint" type="continuous">
     <origin xyz="-0.104 0 0.015" rpy="0 0 ${PI}"/>
-    <parent link="$(arg ns)/base_link"/>
-    <child link="$(arg ns)/caster_base_link"/>
+    <parent link="base_link"/>
+    <child link="caster_base_link"/>
     <axis xyz="0 0 1"/>
   </joint>
   
-  <link name="$(arg ns)/caster_base_link">
+  <link name="caster_base_link">
     <visual>
       <origin xyz="0 0 0.015" rpy="${-PI} 0 0"/>
       <geometry>
@@ -138,14 +152,14 @@
     </inertial>
   </link>
 
-  <joint name="$(arg ns)/caster_wheel_joint" type="continuous">
+  <joint name="caster_wheel_joint" type="continuous">
     <origin xyz="0.015014 -0.00012272 -0.01" rpy="0 ${-PI/2} ${PI/2}"/>
-    <parent link="$(arg ns)/caster_base_link"/>
-    <child link="$(arg ns)/caster_wheel_link"/>
+    <parent link="caster_base_link"/>
+    <child link="caster_wheel_link"/>
     <axis xyz="0 0 1"/>
   </joint>
   
-  <link name="$(arg ns)/caster_wheel_link">
+  <link name="caster_wheel_link">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
@@ -168,14 +182,15 @@
 
 
   <!-- ************************ SENSORS DEFINITION ***************************** -->
+
   <!-- IMU -->
-  <gazebo reference="$(arg ns)/base_link">
+  <gazebo reference="base_link">
     <sensor name="imu_sensor" type="imu">
-      <ignition_frame_id>$(arg ns)/base_link</ignition_frame_id>
+      <ignition_frame_id>base_link</ignition_frame_id>
       <always_on>1</always_on>
-      <update_rate>50</update_rate>
+      <update_rate>$(arg imu_frequency)</update_rate>
       <visualize>false</visualize>
-      <topic>$(arg ns)/imu</topic>
+      <topic>imu</topic>
       <imu>
         <enable_orientation>0</enable_orientation>
         <angular_velocity>
@@ -253,12 +268,12 @@
   </gazebo>
 
   <!-- LIDAR -->
-  <joint name="$(arg ns)/lidar_joint" type="fixed">
-    <parent link="$(arg ns)/base_link"/>
-    <child link="$(arg ns)/lidar_link"/>
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
     <origin xyz="-0.04 0 0.07" rpy="0 0 0"/>
   </joint>
-  <link name="$(arg ns)/lidar_link">
+  <link name="lidar_link">
     <visual>
       <origin xyz="-0.0275 -0.0275 -0.02" rpy="0 0 0"/>
       <geometry>
@@ -269,30 +284,29 @@
       </material>
     </visual>
   </link>
-
-  <gazebo reference="$(arg ns)/lidar_link">
-    <sensor name='gpu_lidar' type='gpu_lidar'>"
-      <ignition_frame_id>$(arg ns)/lidar_link</ignition_frame_id> 
-      <update_rate>10</update_rate>
+  <gazebo reference="lidar_link">
+    <sensor name='gpu_lidar' type='gpu_lidar'>
+      <ignition_frame_id>lidar_link</ignition_frame_id> 
+      <update_rate>$(arg lidar_frequency)</update_rate> <!-- MHz -->
       <ray>
         <scan>
           <horizontal>
-            <samples>360</samples>
-            <resolution>1</resolution>
-            <min_angle>${-PI}</min_angle>
-            <max_angle>${PI}</max_angle>
+            <samples>$(arg horizontal_samples)</samples>
+            <resolution>$(arg horizontal_resolution)</resolution>
+            <min_angle>$(arg horizontal_min_angle)</min_angle>
+            <max_angle>$(arg horizontal_max_angle)</max_angle>
           </horizontal>
           <vertical>
-            <samples>16</samples>
-            <resolution>1</resolution>
-            <min_angle>-0.261799</min_angle>
-            <max_angle>0.261799</max_angle>
+            <samples>$(arg vertical_samples)</samples>     
+            <resolution>$(arg vertical_resolution)</resolution>
+            <min_angle>$(arg vertical_min_angle)</min_angle> <!-- -45 deg -->
+            <max_angle>$(arg vertical_max_angle)</max_angle> <!-- +45 deg -->
           </vertical>
         </scan>
         <range>
-          <min>0.1</min>
-          <max>20.0</max>
-          <resolution>0.017453</resolution>
+          <min>$(arg min_distance)</min>
+          <max>$(arg max_distance)</max>
+          <resolution>$(arg resolution)</resolution>
         </range>
         <noise>
           <type>gaussian</type>
@@ -302,71 +316,19 @@
       </ray>
       <alwaysOn>1</alwaysOn>
       <visualize>false</visualize>
-      <topic>$(arg ns)/lidar</topic>
-    </sensor>
-  </gazebo>
 
-
-  <!-- MONOCULAR CAMERA -->
-  <joint name="$(arg ns)/camera_joint" type="fixed">
-    <origin xyz="-0.1 0 0.06" rpy="0 0 ${PI}"/>
-    <parent link="$(arg ns)/base_link"/>
-    <child link="$(arg ns)/camera_frame"/>
-  </joint>
-  <link name="$(arg ns)/camera_frame">
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.02 0.07 0.03"/>
-      </geometry>
-      <material name="gold">
-        <color rgba="1.0 0.4 0.0 1.0"/>
-      </material>
-    </visual>
-    <!-- Since the camera is a sensor, collision and inertial tags are optional -->
-  </link>
-
-  <gazebo reference="$(arg ns)/camera_frame">
-    <sensor name="camera" type="camera">
-      <ignition_frame_id>$(arg ns)/camera_frame</ignition_frame_id>
-      <optical_frame_id>$(arg ns)/camera_frame</optical_frame_id>
-      <camera>
-        <horizontal_fov>1.085595</horizontal_fov>
-        <image>
-          <width>640</width>
-          <height>480</height>
-          <format>RGB_INT8</format>
-        </image>
-        <camera_info_topic>$(arg ns)/camera/camera_info</camera_info_topic>
-        <clip>
-          <near>0.1</near>
-          <far>8</far>
-        </clip>
-        <distortion>
-          <k1>0</k1>
-          <k2>0</k2>
-          <k3>0</k3>
-          <p1>0</p1>
-          <p2>0</p2>
-          <center>0.5 0.5</center>
-        </distortion>
-      </camera>
-      <always_on>1</always_on>
-      <update_rate>10</update_rate>
-      <visualize>false</visualize>
-      <topic>$(arg ns)/camera/image_raw</topic>
-      <enable_metrics>true</enable_metrics>
+      <topic>lidar</topic>
     </sensor>
   </gazebo>
 
 
   <!-- RGBD CAMERA -->
-  <joint name="$(arg ns)/rgbd_camera_joint" type="fixed">
+  <joint name="rgbd_camera_joint" type="fixed">
     <origin xyz="0.05 0 0.06" rpy="0 ${-PI/4} 0"/>
-    <parent link="$(arg ns)/base_link"/>
-    <child link="$(arg ns)/rgbd_camera_frame"/>
+    <parent link="base_link"/>
+    <child link="rgbd_camera_frame"/>
   </joint>
-  <link name="$(arg ns)/rgbd_camera_frame">
+  <link name="rgbd_camera_frame">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
@@ -378,9 +340,9 @@
     </visual>
   </link>
 
-  <gazebo reference="$(arg ns)/rgbd_camera_frame">
+  <gazebo reference="rgbd_camera_frame">
     <sensor name="rgbd_camera" type="rgbd_camera">
-      <ignition_frame_id>$(arg ns)/rgbd_camera_frame</ignition_frame_id>
+      <ignition_frame_id>rgbd_camera_frame</ignition_frame_id>
       <camera name="rgbd_camera_frame">
         <horizontal_fov>1.0472</horizontal_fov>
         <lens>
@@ -427,7 +389,7 @@
       <always_on>1</always_on>
       <update_rate>10</update_rate>
       <visualize>0</visualize>
-      <topic>$(arg ns)/depth_camera</topic>
+      <topic>depth_camera</topic>
     </sensor>
   </gazebo>
 
@@ -437,8 +399,8 @@
       filename="ignition-gazebo-diff-drive-system"
       name="ignition::gazebo::systems::DiffDrive">
       <!-- By default, cmd_vel topic is used -->
-      <left_joint>$(arg ns)/wheel_left_joint</left_joint>
-      <right_joint>$(arg ns)/wheel_right_joint</right_joint>
+      <left_joint>wheel_left_joint</left_joint>
+      <right_joint>wheel_right_joint</right_joint>
       <wheel_separation>${wheelSeparation}</wheel_separation>
       <wheel_radius>${wheelDiameter/2}</wheel_radius>
       <max_linear_acceleration>0.5</max_linear_acceleration>

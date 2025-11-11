@@ -2,7 +2,7 @@ import os, xacro, yaml
 from pathlib import Path
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
@@ -31,7 +31,7 @@ def generate_launch_description():
     robot_ns = sim.get('robot_ns', 'r1')
     pose = sim.get('pose', ['1.0', '0.0', '0.0', '0.0'])
     robot_base_color = sim.get('robot_base_color', '0.0 0.0 1.0 0.95')
-    world_file = sim.get('world_file', 'warehouse.sdf')
+    world_file = sim.get('world_file', 'depot.sdf')
 
     # Lidar parameters
     lidar_frequency = lidar.get('lidar_frequency', 10.0)
@@ -128,6 +128,12 @@ def generate_launch_description():
                    '-allow_renaming', 'false'],
     )
 
+    # Esperar 3s antes de intentar crear la entidad para dar tiempo a que el mundo cargue
+    gz_spawn_entity = TimerAction(
+        period=3.0,
+        actions=[gz_spawn_entity]
+    )
+
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -192,7 +198,7 @@ def generate_launch_description():
         executable='lidar_imu_sync',  # el nombre del ejecutable que compilas
         output='screen',
         parameters=[{
-            'lidar_topic_in_':  lidar_out_topic+'_pcl',
+            'lidar_topic_in_':  lidar_out_topic+'_pcl',  # If you activate the PCL mode change ign for pcl, for specific lidar formats
             'imu_topic_in_':    imu_out_topic+'_ign',
             'lidar_topic_out_': lidar_out_topic,
             'imu_topic_out_':   imu_out_topic,

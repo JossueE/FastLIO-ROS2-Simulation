@@ -2,11 +2,11 @@
   ros__parameters:
 
     simulation:
-      robot_model : 'ackermann' #Here you can add your URDF model defined in ackermann_slam_sim/urdf
+      robot_model : 'sensors_diffbot' #Here you can add your URDF model defined in ackermann_slam_sim/urdf
       robot_ns : 'r1' # Robot namespace (robot name) ----> RViz is set for this value, Do not move unless you need.
-      pose : ['1.0', '0.0', '0.0', '0.0'] #Initial robot pose: x,y,z,th
+      pose : ['0.1', '0.0', '0.0', '0.0'] #Initial robot pose: x,y,z,th
       robot_base_color : '0.0 0.0 1.0 0.95' #Ign and Rviz color of the robot's main body (rgba)
-      world_file : 'warehouse.sdf' # empty, warehouse
+      world_file : 'depot.sdf' # empty.sdf, depot.sdf
 
     lidar:
       lidar_frequency : 10.0 # The frequency of the lidar in MHz

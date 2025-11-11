@@ -1,9 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.9">
   <world name="world_model">
-    <scene>
-      <shadows>0</shadows>
-    </scene>
     <physics name="1ms" type="ignored">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
@@ -27,7 +24,7 @@
     </plugin>
     
     <plugin filename="gz-sim-imu-system"
-      name="gz::sim::systems::Imu">
+        name="gz::sim::systems::Imu">
     </plugin>
 
     <light type="directional" name="sun">
@@ -70,6 +67,5 @@
         </visual>
       </link>
     </model>
-
   </world>
 </sdf>
