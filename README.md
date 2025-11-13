@@ -52,6 +52,7 @@ Within this repository, you’ll find everything needed to:
     - [Launching the SLAM (FAST_LIO Mapping)](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#launching-the-slam-fast_lio-mapping)
     - [Teleoperating the Robot](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#teleoperating-the-robot) 
     - [Saving the Map (.pcd)](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#saving-the-map-pcd)
+    - [Displaying the Map](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#displaying-the-map)
 
 
 ---
@@ -292,7 +293,7 @@ Create a sensor-specific config file in `fast_lio/config/`, e.g. `simulated.yaml
         filter_size_map: 0.5
         cube_side_length: 1000.0
         runtime_pos_log_enable: false
-        map_file_path: PCD/name_of_your_map.pcd
+        map_file_path: PCD/name_of_your_map.pcd # <----------------- HERE YOU DEFINE YOUR OUTPUT FILE ----------------->
 
         common:
             lid_topic:  "/lidar/points"  # <----------------- HERE YOU PUT EXACTLY THE lidar_out_topic DEFINED BEFORE ----------------->
@@ -323,7 +324,7 @@ Create a sensor-specific config file in `fast_lio/config/`, e.g. `simulated.yaml
                            0., 0., 1.]
 
         publish:
-            map_pub_en: true
+            map_pub_en: true 
             path_en:  false
             scan_publish_en:  true       # false: close all the point cloud output
             dense_publish_en: true       # false: low down the points number in a global-frame point clouds scan.
@@ -335,11 +336,8 @@ Create a sensor-specific config file in `fast_lio/config/`, e.g. `simulated.yaml
                                         # -1 : all frames will be saved in ONE pcd file, may lead to memory crash when having too much frames.
 ```
 
+
 > [!WARNING]
-> If you see logs with:
-> `No point, skip this scan!` and very low `downsamp` values (e.g. `downsamp 1`)
-> check your IMU–LiDAR extrinsics.
-> 
 > Make sure that:
 > - In your URDF/Xacro, the LiDAR pose relative to the IMU/base_link matches
 > - In FAST_LIO, `mapping.extrinsic_T` and `mapping.extrinsic_R` are set to that same transform
@@ -426,11 +424,27 @@ ign topic -t "/model/r1/cmd_vel" -m ignition.msgs.Twist -p "linear: {x: 0.5, y: 
 Move the robot to cover the environment and avoid losing measurements.
 When you’re satisfied with the coverage, call the service to save the map (FAST_LIO saves PCD files):
 
- - Enable the map-save flag `pcd_save.pcd_save_en` and set the output `map_file_path` in `fast_lio/config/simulated.yaml` (e.g., map_file_path: `PCD/name_of_your_map.pcd` and ).  
+ - Enable the map-save flag `pcd_save.pcd_save_en`, `publish.map_pub_en` and set the output `map_file_path` in `fast_lio/config/simulated.yaml` (e.g., map_file_path: `PCD/name_of_your_map.pcd` and ).  
  - With **Launching the SLAM (FAST_LIO Mapping)** active
  - Open RQt and switch to `Plugins->Services->Service Caller`. Trigger the service `/map_save`, then the pcd map file will be generated
 
 or: 
 ```bash
 ros2 service call /map_save std_srvs/srv/Trigger "{}"   #<-------------------- Under Revision -------------------->
+```
+> [!WARNING]
+> If you see logs with:
+> `No point, skip this scan!` and very low `downsamp` values (e.g. `downsamp 1`)
+> check your IMU–LiDAR extrinsics.
+
+### Displaying the Map
+
+Once your map has been saved, you can visualize the final result with:
+
+> [!IMPORTANT]
+> Make sure the path in `config/config.yaml` matches exactly the location where your map was saved.
+> Be careful when mixing relative and absolute paths.
+
+```bash
+ros2 launch slam_sim display_map_launch.py
 ```

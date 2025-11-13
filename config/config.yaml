@@ -7,6 +7,8 @@
       pose : ['0.1', '0.0', '0.0', '0.0'] #Initial robot pose: x,y,z,th
       robot_base_color : '0.0 0.0 1.0 0.95' #Ign and Rviz color of the robot's main body (rgba)
       world_file : 'depot.sdf' # empty.sdf, depot.sdf
+      map_file_path: <YOUR_PATH_HERE> #Path to the map file used by gmapping and rviz 
+      
 
     lidar:
       lidar_frequency: 10.0              # Lidar frequency in Hz (typical value: 10 Hz)

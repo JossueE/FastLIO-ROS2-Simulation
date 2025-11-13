@@ -76,7 +76,7 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         output='screen',
-        arguments=['-d', str(this_pkg_path+"/rviz/ackermann.rviz")],
+        arguments=['-d', str(this_pkg_path+"/rviz/simulation.rviz")],
     )
 
     open_ign = IncludeLaunchDescription(
