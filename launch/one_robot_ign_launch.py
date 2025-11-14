@@ -171,8 +171,7 @@ def generate_launch_description():
             ('/model/'+robot_ns+'/odometry', '/odom'),
             ('/world/world_model/model/'+robot_ns+'/joint_state', 'joint_states'),
             ('/lidar', lidar_out_topic+'/scan'),
-            ('/lidar/points', lidar_out_topic+'_ign'),
-            ('/imu', imu_out_topic+'_ign'),
+            ('/lidar/points', '/cloud'),
         ]
     )
 
@@ -199,7 +198,7 @@ def generate_launch_description():
         output='screen',
         parameters=[{
             'lidar_topic_in_':  lidar_out_topic+'_pcl',  # If you activate the PCL mode change ign for pcl, for specific lidar formats
-            'imu_topic_in_':    imu_out_topic+'_ign',
+            'imu_topic_in_':    '/imu',
             'lidar_topic_out_': lidar_out_topic,
             'imu_topic_out_':   imu_out_topic,
         }],

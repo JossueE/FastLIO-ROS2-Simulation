@@ -4,7 +4,7 @@
 #include <pcl/point_types.h>
 
 #include <pcl_conversions/pcl_conversions.h>
-#include "pcl_conversions.hpp"  // helper de conversiones
+#include <pcl_conversions.hpp>  // helper de conversiones
 
 class Pc2ToXYZI : public rclcpp::Node {
   private:

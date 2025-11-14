@@ -267,7 +267,7 @@ If you want to customize noise, edit your robot’s `.xacro` to pass the values 
 ```yaml
 imu:
     imu_frequency : 50.0 # The frequency of the lidar in Hz
-    imu_out_topic: '/imu/data' #The output topic of the IMU
+    imu_out_topic: '/imu' #The output topic of the IMU
 ```
 
 ### Configure FAST_LIO
@@ -297,7 +297,7 @@ Create a sensor-specific config file in `fast_lio/config/`, e.g. `simulated.yaml
 
         common:
             lid_topic:  "/lidar/points"  # <----------------- HERE YOU PUT EXACTLY THE lidar_out_topic DEFINED BEFORE ----------------->
-            imu_topic:  "/imu/data"      # <----------------- HERE YOU PUT EXACTLY THE imu_out_topic DEFINED BEFORE ----------------->
+            imu_topic:  "/imu"      # <----------------- HERE YOU PUT EXACTLY THE imu_out_topic DEFINED BEFORE ----------------->
             time_sync_en: false         # ONLY turn on when external time synchronization is really not possible
             time_offset_lidar_to_imu: 0.0 # Time offset between lidar and IMU calibrated by other algorithms, e.g. LI-Init (can be found in README).
                                         # This param will take effect no matter what time_sync_en is. So if the time offset is not known exactly, please set as 0.0
