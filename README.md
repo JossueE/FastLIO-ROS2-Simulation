@@ -24,6 +24,16 @@ Within this repository, you’ll find everything needed to:
 **NOTE:** this repo was tested on Ubuntu 22.04 LTS, with ROS 2 Humble and Gazebo Fortress (Ignition).
 
 --- 
+<figure style="margin:0; text-align:center; border:1px solid #eaecef; padding:6px; border-radius:6px;">
+  <img src="docs/slam.png"
+       alt="Localization"
+       style="max-width:50%; height:auto;" />
+  <figcaption style="font-size:0.9em; color:#6a737d; margin-top:4px;">
+    Robot Localization in Real Time with Simulated Lidar
+  </figcaption>
+</figure>
+
+--- 
 
 > [!IMPORTANT]
 > This repository is based on the work of C. Mauricio Arteaga-Escamilla from Robótica Posgrado.
@@ -55,6 +65,7 @@ Within this repository, you’ll find everything needed to:
         - [Saving the Map (.pcd)](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#saving-the-map-pcd)
         - [Displaying the Map](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#displaying-the-map)
     - [Localization](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#localization)
+        - [Localization in a Previous Map Saved](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#localization-in-a-previous-map-saved)
 
 
 ---
