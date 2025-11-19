@@ -26,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -125,10 +125,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.4447964429855347
+      Pitch: 1.4397964477539062
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.742255210876465
+      Yaw: 4.747255325317383
     Saved: ~
 Window Geometry:
   Displays:

@@ -23,7 +23,7 @@ PCLLocalization::PCLLocalization(const rclcpp::NodeOptions & options)
   declare_parameter("scan_max_range", 100.0);
   declare_parameter("scan_min_range", 1.0);
   declare_parameter("scan_period", 0.1);
-  declare_parameter("use_pcd_map", false);
+  declare_parameter("use_pcd_map", true);
   declare_parameter("map_path", "/map/map.pcd");
   declare_parameter("set_initial_pose", false);
   declare_parameter("initial_pose_x", 0.0);
@@ -38,6 +38,8 @@ PCLLocalization::PCLLocalization(const rclcpp::NodeOptions & options)
   declare_parameter("enable_debug", false);
   declare_parameter("enable_timer_publishing", false);
   declare_parameter("pose_publish_frequency", 10.0);
+  declare_parameter("lidar_topic_in_", std::string("/lidar/points_ign"));
+  declare_parameter("imu_topic_in_", std::string("/imu/data_ign"));
 }
 
 using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
@@ -210,6 +212,8 @@ void PCLLocalization::initializeParameters()
   get_parameter("enable_debug", enable_debug_);
   get_parameter("enable_timer_publishing", enable_timer_publishing_);
   get_parameter("pose_publish_frequency", pose_publish_frequency_);
+  get_parameter("lidar_topic_in_", lidar_topic_in_);
+  get_parameter("imu_topic_in_", imu_topic_in_);
 
   RCLCPP_INFO(get_logger(),"global_frame_id: %s", global_frame_id_.c_str());
   RCLCPP_INFO(get_logger(),"odom_frame_id: %s", odom_frame_id_.c_str());
@@ -232,11 +236,15 @@ void PCLLocalization::initializeParameters()
   RCLCPP_INFO(get_logger(),"enable_debug: %d", enable_debug_);
   RCLCPP_INFO(get_logger(),"enable_timer_publishing: %d", enable_timer_publishing_);
   RCLCPP_INFO(get_logger(),"pose_publish_frequency: %lf", pose_publish_frequency_);
+  RCLCPP_INFO(get_logger(), "lidar_topic_in_: %s", lidar_topic_in_.c_str());
+  RCLCPP_INFO(get_logger(), "imu_topic_in_: %s", imu_topic_in_.c_str());
 }
 
 void PCLLocalization::initializePubSub()
 {
   RCLCPP_INFO(get_logger(), "initializePubSub");
+  RCLCPP_INFO(get_logger(), "lidar_topic_in_: %s", lidar_topic_in_.c_str());
+  RCLCPP_INFO(get_logger(), "imu_topic_in_: %s", imu_topic_in_.c_str());
 
   pose_pub_ = create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>(
     "pcl_pose",
@@ -263,12 +271,12 @@ void PCLLocalization::initializePubSub()
     std::bind(&PCLLocalization::odomReceived, this, std::placeholders::_1));
 
   cloud_sub_ = create_subscription<sensor_msgs::msg::PointCloud2>(
-    "cloud", rclcpp::SensorDataQoS(),
+    lidar_topic_in_, rclcpp::SensorDataQoS(),
     std::bind(&PCLLocalization::cloudReceived, this, std::placeholders::_1));
 
 
   imu_sub_ = create_subscription<sensor_msgs::msg::Imu>(
-    "imu", rclcpp::SensorDataQoS(),
+    imu_topic_in_, rclcpp::SensorDataQoS(),
     std::bind(&PCLLocalization::imuReceived, this, std::placeholders::_1));
 
   if (enable_timer_publishing_) {

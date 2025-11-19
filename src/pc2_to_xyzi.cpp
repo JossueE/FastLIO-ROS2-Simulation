@@ -9,8 +9,8 @@
 class Pc2ToXYZI : public rclcpp::Node {
   private:
 
-    std::string lidar_topic_in_ = "/none";
-    std::string lidar_topic_out_ = "/none";
+    std::string lidar_topic_in_;
+    std::string lidar_topic_out_;
 
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub;
     rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr pub;

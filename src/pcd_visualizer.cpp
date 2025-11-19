@@ -26,7 +26,7 @@ public:
     pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_(new pcl::PointCloud<pcl::PointXYZI>);
     pcl::io::loadPCDFile<pcl::PointXYZI>(map_file_path, *cloud_);
     pcl::toROSMsg(*cloud_.get(), ros_pc2_);
-    publisher_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("/pcd", 10);
+    publisher_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("/map", 10);
     timer_ = this->create_wall_timer(5000ms, std::bind(&PcdtoPointcloud2::timer_callback, this));
     std::cout << "size: " << ros_pc2_.width * ros_pc2_.height << std::endl;
     ros_pc2_.header.frame_id = "map";

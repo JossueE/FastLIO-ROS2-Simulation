@@ -171,7 +171,8 @@ def generate_launch_description():
             ('/model/'+robot_ns+'/odometry', '/odom'),
             ('/world/world_model/model/'+robot_ns+'/joint_state', 'joint_states'),
             ('/lidar', lidar_out_topic+'/scan'),
-            ('/lidar/points', '/cloud'),
+            ('/lidar/points', lidar_out_topic+'_ign'),
+            ('/imu', imu_out_topic+'_ign'),
         ]
     )
 
@@ -197,8 +198,8 @@ def generate_launch_description():
         executable='lidar_imu_sync',  # el nombre del ejecutable que compilas
         output='screen',
         parameters=[{
-            'lidar_topic_in_':  lidar_out_topic+'_pcl',  # If you activate the PCL mode change ign for pcl, for specific lidar formats
-            'imu_topic_in_':    '/imu',
+            'lidar_topic_in_':  lidar_out_topic+'_pcl',  
+            'imu_topic_in_':    imu_out_topic+'_ign',
             'lidar_topic_out_': lidar_out_topic,
             'imu_topic_out_':   imu_out_topic,
         }],
@@ -210,7 +211,7 @@ def generate_launch_description():
         [
             simu_time,
             ign_resource_path,
-            open_rviz,
+            #open_rviz,
             open_ign,
             gz_spawn_entity,
             robot_state_publisher,

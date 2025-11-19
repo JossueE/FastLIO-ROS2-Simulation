@@ -129,6 +129,8 @@ public:
 
   double pose_publish_frequency_;
   bool enable_timer_publishing_{false};
+  std::string lidar_topic_in_;
+  std::string imu_topic_in_;
 
   // imu
   LidarUndistortion lidar_undistortion_;

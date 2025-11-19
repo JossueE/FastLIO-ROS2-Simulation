@@ -22,11 +22,11 @@ def generate_launch_description():
     root = cfg.get("/**", cfg)
     params = root.get("ros__parameters", root)
 
-    sim   = params["simulation"]
+    sim   = params["localization"]
 
 
     # Simulation parameters
-    map_file_path = sim.get('map_file_path', 'PCD/test.pcd')
+    map_file_path = sim.get('map_path', 'PCD/test.pcd')
 
 
     open_rviz = Node(

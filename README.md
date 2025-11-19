@@ -129,6 +129,9 @@ All required rosdeps installed successfully
 ---
 
 ### Cloning FAST_LIO -> Mapping (adapted for ROS 2) 
+
+Para continuar necesitamos este repo --------
+
 Please refer to the official documentation at  
 [FAST_LIO_ROS2](https://github.com/Ericsii/FAST_LIO_ROS2)  
 for detailed installation and configuration instructions.
@@ -382,6 +385,7 @@ ros2 launch slam_sim one_robot_ign_launch.py
 
 ### Launching the SLAM (FAST_LIO Mapping)
 
+asdsadasdasdasdddddddddddddddddddddddddddddddddd external package
 In a new terminal: 
 ```bash
 cd ~/colcon_ws
