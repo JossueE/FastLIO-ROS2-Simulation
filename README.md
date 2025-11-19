@@ -25,7 +25,7 @@ Within this repository, you’ll find everything needed to:
 
 --- 
 <p align="center">
-  <img src="docs/slam.png" alt="Robot Localization in Real Time with Simulated Lidar" width="700">
+  <img src="docs/slam.png" alt="Robot Localization in Real Time with Simulated Lidar" width="900">
   <br>
   <em>Robot Localization in Real Time with Simulated Lidar</em>
 </p>  
