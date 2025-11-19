@@ -60,7 +60,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /pcd
+        Value: /map
       Use Fixed Frame: true
       Use rainbow: true
       Value: true

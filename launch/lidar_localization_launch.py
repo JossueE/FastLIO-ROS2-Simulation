@@ -63,14 +63,6 @@ def generate_launch_description():
         default_value='True',
         description='Use simulation (Gazebo) clock if true')
 
-    open_rviz = launch_ros.actions.Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        output='screen',
-        arguments=['-d', str(this_pkg_path+"/rviz/localization.rviz")],
-    )
-
     from_unconfigured_to_inactive = launch.actions.RegisterEventHandler(
         launch_ros.event_handlers.OnStateTransition(
             target_lifecycle_node=lidar_localization,
@@ -106,6 +98,5 @@ def generate_launch_description():
 
     ld.add_action(lidar_localization)
     ld.add_action(to_inactive)
-    ld.add_action(open_rviz)
 
     return ld
