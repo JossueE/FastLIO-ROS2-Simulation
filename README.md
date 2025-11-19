@@ -29,7 +29,6 @@ Within this repository, you’ll find everything needed to:
   <br>
   <em>Robot Localization in Real Time with Simulated Lidar</em>
 </p>  
---- 
 
 > [!IMPORTANT]
 > This repository is based on the work of C. Mauricio Arteaga-Escamilla from Robótica Posgrado.
