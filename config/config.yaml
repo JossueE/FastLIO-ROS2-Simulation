@@ -35,25 +35,25 @@
       imu_out_topic: '/imu/data'
 
     localization:
-      registration_method: "NDT_OMP"
-      score_threshold: 2.0
-      ndt_resolution: 1.0
-      ndt_step_size: 0.1
-      ndt_num_threads: 4
-      transform_epsilon: 0.01
-      voxel_leaf_size: 0.2
-      use_pcd_map: true
-      set_initial_pose: true
-      initial_pose_x: 0.0
-      initial_pose_y: 0.0
-      initial_pose_z: 0.0
-      initial_pose_qx: 0.0
-      initial_pose_qy: 0.0
-      initial_pose_qz: 0.0
-      initial_pose_qw: 0.0
-      use_odom: false
-      use_imu: false
-      enable_debug: true
-      global_frame_id: map
-      odom_frame_id: odom
-      base_frame_id: base_link 
+      registration_method: "NDT_OMP"   # Registration method used for scan matching
+      score_threshold: 2.0             # Threshold to accept/reject a registration result
+      ndt_resolution: 1.0              # NDT grid resolution [m]
+      ndt_step_size: 0.1               # Step size for the optimizer
+      ndt_num_threads: 4               # Number of threads used by NDT_OMP
+      transform_epsilon: 0.01          # Convergence criteria for the transformation
+      voxel_leaf_size: 0.2             # Leaf size for downsampling the input cloud
+      use_pcd_map: true                # Use a prebuilt PCD map for localization
+      set_initial_pose: true           # Whether to set an explicit initial pose
+      initial_pose_x: 0.0              # Initial pose (x) in map frame
+      initial_pose_y: 0.0              # Initial pose (y) in map frame
+      initial_pose_z: 0.0              # Initial pose (z) in map frame
+      initial_pose_qx: 0.0             # Initial orientation (qx) in map frame
+      initial_pose_qy: 0.0             # Initial orientation (qy) in map frame
+      initial_pose_qz: 0.0             # Initial orientation (qz) in map frame
+      initial_pose_qw: 0.0             # Initial orientation (qw) in map frame
+      use_odom: false                  # Enable fusion with wheel odometry
+      use_imu: false                   # Enable fusion with IMU data
+      enable_debug: true               # Publish extra debug information / topics
+      global_frame_id: map             # Global reference frame
+      odom_frame_id: odom              # Odometry frame
+      base_frame_id: base_link         # Robot base frame

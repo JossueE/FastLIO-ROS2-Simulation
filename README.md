@@ -35,9 +35,8 @@ Within this repository, you’ll find everything needed to:
 ## 📚 Table of Contents
 - [Installation](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#installation)
     - [Pre-requisites and Ignition installation](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#pre-requisites-and-ignition-installation)
-    - [Installing ROS 2 packages](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#installing-ros-2-packages)
     - [Cloning FAST_LIO adapted to work with ROS2](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#cloning-fast_lio---mapping-adapted-for-ros-2)
-    - [Localization (adapted for ROS 2) ](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#localization-adapted-for-ros-2)
+    - [Cloning Localization Requirements](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#cloning-localization-requirements)
     - [Cloning this Repo](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#cloning-this-repo)
 
 - [Configuration](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#configuration)
@@ -46,18 +45,28 @@ Within this repository, you’ll find everything needed to:
     - [Configure your LiDAR (URDF/Xacro + Ignition)](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#configure-your-lidar-urdfxacro--ignition)
     - [Configure your IMU (URDF/Xacro + Ignition)](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#configure-your-imu-urdfxacro--ignition)
     - [Configure FAST_LIO](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#configure-fast_lio)
+    - [Configure Localization](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#configure-localization)
 
-- [Launching](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#launching)
-    - [Launching the Robot in Gazebo](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#launching-the-robot-in-gazebo)
-    - [Launching the SLAM (FAST_LIO Mapping)](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#launching-the-slam-fast_lio-mapping)
-    - [Teleoperating the Robot](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#teleoperating-the-robot) 
-    - [Saving the Map (.pcd)](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#saving-the-map-pcd)
-    - [Displaying the Map](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#displaying-the-map)
+- [Usage](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#usage)
+    - [Mapping](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#mapping)
+        - [Launching the Robot in Gazebo](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#launching-the-robot-in-gazebo)
+        - [Launching the SLAM (FAST_LIO Mapping)](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#launching-the-slam-fast_lio-mapping)
+        - [Teleoperating the Robot](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#teleoperating-the-robot) 
+        - [Saving the Map (.pcd)](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#saving-the-map-pcd)
+        - [Displaying the Map](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#displaying-the-map)
+    - [Localization](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#localization)
 
 
 ---
 
 ## Installation
+
+> [!IMPORTANT]
+> It is necessary to follow **all** the steps defined below, including:
+> - Pre-requisites  
+> - Ignition installation  
+> - Cloning FAST_LIO → Mapping (adapted for ROS 2)  
+> - Cloning Localization Requirements (adapted for ROS 2)
 
 ### Pre-requisites and Ignition installation
 
@@ -70,7 +79,7 @@ To avoid possible errors, please update your system and install the following RO
 
 ```bash
 sudo apt-get update
-sudo apt-get install ros-$ROS_DISTRO-joint-state-publisher ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-joint-state-publisher-gui ros-$ROS_DISTRO-tf2-* ros-$ROS_DISTRO-rviz-default-plugins
+sudo apt-get install ros-$ROS_DISTRO-joint-state-publisher ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-joint-state-publisher-gui ros-$ROS_DISTRO-tf2-* ros-$ROS_DISTRO-gazebo-* ros-$ROS_DISTRO-rviz-default-plugins ros-$ROS_DISTRO-ros2-control ros-$ROS_DISTRO-ros2-controllers ros-$ROS_DISTRO-controller-manager ros-$ROS_DISTRO-pcl-*
 ```
 
 To install Ignition to work with ROS 2, run the following command:
@@ -89,39 +98,10 @@ https://github.com/gazebosim/ros_gz/tree/humble
 sudo apt-get install ros-$ROS_DISTRO-ros-ign-bridge
 ```
 
----
-### Installing ROS 2 packages
-
-To avoid possible errors, please update your system and install the following ROS 2 dependencies.
-
-```
-sudo apt-get update
-```
-
-ROS 2 dependencies for robot description:
+Finally install libpcl
 
 ```bash
-sudo apt-get install ros-$ROS_DISTRO-joint-state-publisher ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-joint-state-publisher-gui ros-$ROS_DISTRO-tf2-* ros-$ROS_DISTRO-gazebo-* ros-$ROS_DISTRO-rviz-default-plugins ros-$ROS_DISTRO-ros2-control ros-$ROS_DISTRO-ros2-controllers ros-$ROS_DISTRO-controller-manager
-```
-
-If the following error appears:<br>
-_LookupError: Could not find the resource '<package_name>' of type 'packages'_
-
-Try to install the corresponding ROS dependency with
-
-```bash
-sudo apt-get install ros-$ROS_DISTRO-<package-name>
-```
-
-For example:
-
-```bash
-sudo apt-get install ros-$ROS_DISTRO-joint-state-publisher-gui
-```
-
-If you already have all your dependencies, the console will return: <br>
-```bash
-All required rosdeps installed successfully
+sudo apt install libpcl-dev
 ```
 
 **Note:** _This is made only once for the whole workspace._
@@ -130,7 +110,8 @@ All required rosdeps installed successfully
 
 ### Cloning FAST_LIO -> Mapping (adapted for ROS 2) 
 
-Para continuar necesitamos este repo --------
+> [!IMPORTANT]
+> Before cloning the repository, make sure you have FAST_LIO (ROS 2–adapted version) available.
 
 Please refer to the official documentation at  
 [FAST_LIO_ROS2](https://github.com/Ericsii/FAST_LIO_ROS2)  
@@ -153,18 +134,50 @@ which is essential when working with **Livox AVIA LiDARs** in real-world applica
 If you **do not plan to use a real LiDAR from Livox**, you can safely **comment out all related dependencies** —  
 the package will still compile and run correctly in simulation mode.
 
+Please comment: 
+**File:** `~/colcon_ws/src/FAST_LIO_ROS2/CMakeLists.txt`
+- **Line 62**
+  ```cmake
+  #find_package(livox_ros_driver2 REQUIRED)
+  ```
+- **Line 76**
+  ```cmake
+  set(dependencies
+    rclcpp
+    rclcpp_components
+    geometry_msgs
+    nav_msgs
+    sensor_msgs
+    std_msgs
+    std_srvs
+    visualization_msgs
+    pcl_ros
+    pcl_conversions
+    #livox_ros_driver2
+    )
+  ```
+**File:** `~/colcon_ws/src/FAST_LIO_ROS2/package.xml`
+- **Line 30**
+  ```xml
+    <!-- <depend>livox_ros_driver2</depend> -->
+  ```
+
 However, if it’s not a problem for your setup, it’s recommended to **keep the original configuration**  
 so that the system remains fully compatible with both **simulation** and **real-world** LiDAR setups.
 
-### Localization (adapted for ROS 2) 
+### Cloning Localization Requirements
 
+This package includes its own ROS 2–adapted version of
+[lidar_localization_ros2](https://github.com/rsasaki0109/lidar_localization_ros2?tab=readme-ov-file#lidar_localization_ros2),
+so you only need to download the following dependency:
 
-██╗░░░░░░█████╗░░█████╗░██████╗░██╗███╗░░██╗░██████
-██║░░░░░██╔══██╗██╔══██╗██╔══██╗██║████╗░██║██╔════
-██║░░░░░██║░░██║███████║██║░░██║██║██╔██╗██║██║░░██
-██║░░░░░██║░░██║██╔══██║██║░░██║██║██║╚████║██║░░╚█
-███████╗╚█████╔╝██║░░██║██████╔╝██║██║░╚███║╚██████
-╚══════╝░╚════╝░╚═╝░░╚═╝╚═════╝░╚═╝╚═╝░░╚══╝░╚═════
+- [ndt_omp_ros2](https://github.com/rsasaki0109/ndt_omp_ros2.git)
+
+```bash
+cd ~/colcon_ws/src
+git clone https://github.com/rsasaki0109/ndt_omp_ros2.git
+cd ..
+```
 
 ### Cloning this Repo
 
@@ -176,8 +189,14 @@ cd ~/colcon_ws/src
 git clone https://github.com/JossueE/FastLIO-ROS2-Simulation.git
 cd ..
 ```
+First, build the required external package:
 
+```bash
+colcon build --packages-select ndt_omp_ros2
+source install/setup.bash
+```
 Then, build colcon ws:
+
 ```bash
 colcon build --packages-select slam_sim --symlink-install
 source install/setup.bash
@@ -366,15 +385,80 @@ decalre_config_file_cmd = DeclareLaunchArgument(
 > This step is optional — you can also specify the `config_file` directly in the launch command (see the **Launch** section below).
 ---
 
-## Launching
+### Configure Localization
 
-### Launching the Robot in Gazebo
+Some parameters (such as **frequency**, **max_distance**, etc.) are inherited from previous sections of the configuration file.  
+In this block, you can fine-tune how the **localization node** behaves, including:
+
+- The registration algorithm used for pose estimation.
+- The precision and robustness of NDT-based matching.
+- Whether to use a precomputed PCD map or not.
+- The initial pose of the robot in the map frame.
+- The reference frames used for TF (`map`, `odom`, `base_link`).
+- The use of additional sensors such as odometry and IMU.
+
+Below is an example of the `localization` configuration section:
+
+```yaml
+localization:
+    registration_method: "NDT_OMP"   # Registration method used for scan matching
+    score_threshold: 2.0             # Threshold to accept/reject a registration result
+    ndt_resolution: 1.0              # NDT grid resolution [m]
+    ndt_step_size: 0.1               # Step size for the optimizer
+    ndt_num_threads: 4               # Number of threads used by NDT_OMP
+    transform_epsilon: 0.01          # Convergence criteria for the transformation
+    voxel_leaf_size: 0.2             # Leaf size for downsampling the input cloud
+    use_pcd_map: true                # Use a prebuilt PCD map for localization
+    set_initial_pose: true           # Whether to set an explicit initial pose
+    initial_pose_x: 0.0              # Initial pose (x) in map frame
+    initial_pose_y: 0.0              # Initial pose (y) in map frame
+    initial_pose_z: 0.0              # Initial pose (z) in map frame
+    initial_pose_qx: 0.0             # Initial orientation (qx) in map frame
+    initial_pose_qy: 0.0             # Initial orientation (qy) in map frame
+    initial_pose_qz: 0.0             # Initial orientation (qz) in map frame
+    initial_pose_qw: 0.0             # Initial orientation (qw) in map frame
+    use_odom: false                  # Enable fusion with wheel odometry
+    use_imu: false                   # Enable fusion with IMU data
+    enable_debug: true               # Publish extra debug information / topics
+    global_frame_id: map             # Global reference frame
+    odom_frame_id: odom              # Odometry frame
+    base_frame_id: base_link         # Robot base frame
+
+```
+
+## Usage
+> [!IMPORTANT]
+> The following sections are intended to be used as a **step-by-step usage guide**, from zero to a complete workflow.
+> You can follow them in order, or jump directly to the part you need once you are familiar with the setup.
+>
+> We work with **two main workflows**:
+> - **Mapping**  
+>   You will:
+>   1. **Launch the robot in Gazebo**  
+>   2. **Launch FAST_LIO (Mapping)** to build a LiDAR map (.pcd)  
+>   3. **Teleoperate the robot** around the environment  
+>   4. **Save the map (.pcd)**  
+>   5. (Optional) **Display the final map**
+>
+> - **Localization**  
+>   You will:
+>   1. **Launch the robot in Gazebo**  
+>   2. **Load the previously saved map** and start the localization node  
+>   3. **Teleoperate the robot** again, now using the existing map for localization
+
+### Mapping
+#### Launching the Robot in Gazebo
 
 You can start the simulation with:
 
 ```bash
 cd ~/colcon_ws
-colcon build --packages-select slam_sim fast_lio --symlink-install
+colcon build --packages-select ndt_omp_ros2
+source install/setup.bash
+```
+Then:
+```bash
+colcon build --packages-select slam_sim --symlink-install
 source install/setup.bash
 ros2 launch slam_sim one_robot_ign_launch.py
 ```
@@ -383,14 +467,14 @@ ros2 launch slam_sim one_robot_ign_launch.py
 > - If you change the **LiDAR** or **IMU** topic names, update your RViz displays (reselect topics) so they match the new names.
 
 
-### Launching the SLAM (FAST_LIO Mapping)
+#### Launching the SLAM (FAST_LIO Mapping)
 
-asdsadasdasdasdddddddddddddddddddddddddddddddddd external package
-In a new terminal: 
+In a new terminal and with the steps before completed.
+
 ```bash
 cd ~/colcon_ws
 source install/setup.bash
-ros2 launch fast_lio mapping.launch.py 
+ros2 launch fast_lio mapping.launch.py  # <-------- This correspond from an external package
 ```
 Or whit the config_file as an argument:
 ```bash
@@ -403,7 +487,7 @@ RViz will open with the LiDAR map view. Any warnings or errors will appear in th
 
 ---
 
-### Teleoperating the Robot
+#### Teleoperating the Robot
 
 To teleoperate both the **_differential_** and **_omnidirectional_** mobile robot, use the package node:
 
@@ -423,7 +507,7 @@ ign topic -t "/model/r1/cmd_vel" -m ignition.msgs.Twist -p "linear: {x: 0.5, y: 
 ```
 ---
 
-### Saving the Map (.pcd)
+#### Saving the Map (.pcd)
 
 Move the robot to cover the environment and avoid losing measurements.
 When you’re satisfied with the coverage, call the service to save the map (FAST_LIO saves PCD files):
@@ -441,7 +525,7 @@ ros2 service call /map_save std_srvs/srv/Trigger "{}"
 > `No point, skip this scan!` and very low `downsamp` values (e.g. `downsamp 1`)
 > check your IMU–LiDAR extrinsics.
 
-### Displaying the Map
+#### Displaying the Map
 
 Once your map has been saved, you can visualize the final result with:
 
@@ -452,3 +536,28 @@ Once your map has been saved, you can visualize the final result with:
 ```bash
 ros2 launch slam_sim display_map_launch.py
 ```
+### Localization 
+#### Localization in a Previous Map Saved
+
+First you have to run the [**Launching the Robot in Gazebo**](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#launching-the-robot-in-gazebo) exactly as we defined in the previous section Mapping. 
+
+> [!NOTE]
+> Once the simulation is running, you can close the default RViz2 window that starts with the launcher if you prefer to use a custom RViz2 configuration.
+
+Start RViz2 with the Localization Configuration
+
+In a new terminal:
+```bash
+cd ~/colcon_ws
+source install/setup.bash
+rviz2 -d src/slam_sim/rviz/localization.rviz
+```
+Launch the Localization Node
+In another terminal:
+```bash
+cd ~/colcon_ws
+source install/setup.bash
+ros2 launch slam_sim lidar_localization_launch.py
+```
+
+Finally, you can teleoperate the robot using the same teleop node described earlier in [**Teleoperating the Robot**](https://github.com/JossueE/FastLIO-ROS2-Simulation?tab=readme-ov-file#teleoperating-the-robot) defined before. 
